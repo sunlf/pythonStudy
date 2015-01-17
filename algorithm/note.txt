@@ -1,0 +1,9 @@
+#2015年1月17日 10:58:50
+#some not about algorithm
+
+指数
+X^AX^B = X^A+B
+X^A/X^B=X^A-B
+(X^A)^B=X^AB
+X^N + X^N = 2X^N
+2^N +2^N = 2^N+1
