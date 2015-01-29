@@ -1,7 +1,7 @@
 from random import randint
 randNum = randint(5,10)
 
-print 'guess what i think'
+print 'guess what i think lilei'
 bingo = False
 
 while  bingo ==False:
