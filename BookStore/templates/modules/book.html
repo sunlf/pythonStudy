@@ -1,5 +1,6 @@
 <div class="book">
 	<h3 class="book_title">{{ book["title"] }}</h3>
 	<img src="{{ book["image"] }}" class="book_image" /><br/>
-	<p>Added:{{ locale.format_date(book["date_added"],relative=False) }}</p>
+	<p>Added:{{ locale.format_date(book["date_added"],relative=False) }}</p><br/>
+	<p><a href="/edit/{{ book['isbn'] }}">Edit</a></p>
 </div>

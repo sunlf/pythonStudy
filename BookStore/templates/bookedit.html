@@ -1,0 +1,11 @@
+{% extends main.html %}
+
+{% block body %}
+	<form method="post">
+		ISBN <input type="text" name="isbn" value="{{ book.get('isbn','') }}"/> <br/>
+		Title <input type="text" name="title" value="{{ book.get('title','') }}"/><br/>
+		Image <input type="text" name="image" value="{{ book.get('image','') }}"/><br/>
+		Date_released <input type="text" name="date_released" value="{{ book.get('date_released','') }}"/><br/>
+		<input type="submit" value="save" />
+	</form>
+{% end %}

@@ -5,6 +5,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
+import pymongo
 
 from tornado.options import define,options
 define("port",default=8000,help = "run on the give port",type=int)
@@ -19,17 +20,33 @@ class BookModule(tornado.web.UIModule):
 
 class RecommendedHandler(tornado.web.RequestHandler):
 	def get(self):
-		self.render("recommended.html",page_title="recommended reading Books",books=[{
-				"title":"CLR VIA C# 4",
-				"image":"https://www.baidu.com/img/baidu_jgylogo3.gif?v=39973032.gif",
-				"date_added":1310248056
-			},
-			{
-				"title":"Thinking in java",
-				"image":"https://www.baidu.com/img/baidu_jgylogo3.gif?v=39973032.gif",
-				"date_added":1310248056
-			}
-			])
+		books = self.application.db.books.find()
+		self.render("recommended.html",page_title="recommended reading Books",books=books)
+
+class BookEditHandler(tornado.web.RequestHandler):
+	def get(self,isbn=None):
+		book = dict()
+		if isbn:
+			coll = self.application.db.books
+			book = coll.find_one({"isbn":isbn})
+		self.render("bookedit.html",page_title="Edit Books",book=book)
+
+	def post(self,isbn=None):
+		import time
+		book_field = ["isbn","title","image","date_released"]
+		coll = self.application.db.books
+		book = dict()
+		if isbn:
+			book = coll.find_one({"isbn":isbn})
+		for key in book_field:
+			book[key] = self.get_argument(key,None)
+
+		if isbn:
+			coll.save(book)
+		else:
+			book["date_added"] = int(time.time())
+			coll.insert(book)
+		self.redirect("/reco")
 
 
 class BookStoreApp(tornado.web.Application):
@@ -37,6 +54,8 @@ class BookStoreApp(tornado.web.Application):
 		handlers = [
 			(r'/',IndexHanler),
 			(r'/reco',RecommendedHandler),
+			(r'/edit/([0-9Xx\-]+)',BookEditHandler),
+			(r'/add',BookEditHandler)
 		]
 		settings = dict(
 			template_path = os.path.join(os.path.dirname(__file__),"templates"),
@@ -44,6 +63,8 @@ class BookStoreApp(tornado.web.Application):
 			ui_modules = {"Book":BookModule},
 			debug=True
 		)
+		conn = pymongo.MongoClient("localhost",27017)
+		self.db = conn.bookstore
 		super().__init__(handlers,**settings)
 
 if __name__ =='__main__':
