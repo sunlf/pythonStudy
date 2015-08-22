@@ -34,7 +34,7 @@ class MungedApp(tornado.web.Application):
 		handlers = [(r'/',IndexHanler),(r'/poem',MungePageHandler)]
 		template_path = os.path.join(os.path.dirname(__file__),"templates")
 		static_path = os.path.join(os.path.dirname(__file__),"static")
-		super(MungedApp,self).__init__(handlers,template_path=template_path,static_path=static_path,debug=True)
+		super().__init__(handlers,template_path=template_path,static_path=static_path,debug=True)
 
 if __name__ =='__main__':
 	tornado.options.parse_command_line()

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<title>{{ page_title }}</title>
+	<link rel="stylesheet" type="text/css" href="{{ static_url("css/style.css") }}">
+<body>
+	<div id="container">
+		<header>
+				{% block header %}
+					<h1>Free IT Books</h1>
+				{% end %}
+		</header>
+		<div id="main">
+				<div id="content">
+					{% block body %}{% end %}
+				</div>
+		</div>
+		<footer>
+			{% block footer %}
+				<p>
+					For more information about our selection, hours or events, please email us at
+					<a href="mailto:longfeiit@126.com">longfeiit@126.com</a>.
+				</p>
+    		{% end %}
+		</footer>
+	</div>
+	<script type="text/javascript" src="{{ static_url("js/script.js") }}"></script>
+</body>
+</html>
