@@ -34,10 +34,10 @@ def action(path,pname,savepath):
 	save(sqlStr ,savepath)
 
 
-action(path10,'10%','C:\\cashBack\\back10.sql')
+action(path10,'return10%','C:\\cashBack\\back10.sql')
 
 #print("--------------------------")
-action(path12,'12%','C:\\cashBack\\back12.sql')
+action(path12,'return12%','C:\\cashBack\\back12.sql')
 
 
 
