@@ -14,7 +14,7 @@ class excelMode(object):
 		self.vehicleCode = vehicleCode
 
 
-xlsPath = os.path.join(root,"xhnf.xlsx");
+xlsPath = os.path.join(root,"xhnf2.xlsx");
 sqlPath = os.path.join(root,"xhnf.sql");
 sqlFormat = "INSERT INTO dbo.OSD_PackageVehicleConfig( PackageVehicleID ,DiscountChannel ,SortNum ,InsuranceType ,ContractCode ,\
 	DataSource ,AdjustFactor ,IsActive ,DataChange_CreateTime , DataChange_LastTime ,UseCarBeginDate ,UseCarEndDate , Priority ,RateCode, \
@@ -35,8 +35,8 @@ if os.path.isfile(xlsPath):
 			provinceIds= provinceIdInfos.split('|')[1]
 			provinceIdDics[provinceNameKey] = provinceIds
 		else:
-			vehicleCode = table.cell_value(rownum,0)
-			if vehicleCode !='':
+			vehicleName = table.cell_value(rownum,0)
+			if vehicleName !='':
 				packageVehicleID = table.cell_value(rownum,2)
 				adjustFactorCell = table.cell_value(rownum,5)
 				activeStr = table.cell_value(rownum,4)
@@ -45,18 +45,15 @@ if os.path.isfile(xlsPath):
 				isActive= 1
 				adjustFactor = 1
 				#print(activeStr)
-				if str(activeStr).strip() =='\\':
-					isActive = 0
-					if adjustFactorCell:
-						adjustFactor = adjustFactorCell
-					print('done')
+				if adjustFactorCell:
+					adjustFactor = 1+float(adjustFactorCell)
 				dataArr.append(excelMode(packageVehicleID,adjustFactor,isActive,provinceNameKey,vehicleCode))
 	#print(provinceIdDics)
 	for x in dataArr:
 		provinceIds = provinceIdDics.get(x.provinceNameKey)
 		provinceArr = provinceIds.split(',')
 		for provinceId in provinceArr:
-			comment = "--"+str(provinceId)+"#"+str(int(x.packageVehicleID))+"#"+x.vehicleCode
+			comment = "--"+str(provinceId)+"#"+str(int(x.packageVehicleID))+"#"+x.vehicleCode+"#"+str(x.adjustFactor)
 			sql = comment+"\n"+sqlFormat.format(int(x.packageVehicleID),x.adjustFactor,x.isActive,provinceId)
 			sqlres +=sql+"\n"
 		sqlres+='\n'
